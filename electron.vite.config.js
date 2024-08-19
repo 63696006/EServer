@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { defineConfig, externalizeDepsPlugin, splitVendorChunkPlugin } from 'electron-vite'
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
 import commonjsExternals from 'vite-plugin-commonjs-externals'
 import Components from 'unplugin-vue-components/vite'
@@ -22,7 +22,10 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    optimizeDeps: {
+    optimize: {
+      chunkNames: {
+        vendor: 'vendor'
+      },
       exclude: externals
     },
     resolve: {
@@ -32,7 +35,6 @@ export default defineConfig({
     },
     plugins: [
       vue(),
-      splitVendorChunkPlugin(),
       commonjsExternals({
         externals
       }),
